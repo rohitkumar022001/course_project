@@ -21,7 +21,6 @@ public class StudentServices {
 		System.out.println("please Login");
 		
 		try {
-			
 			 while(true) {
 				 String sql = "select * from student";
 					stmt = CRSApp.con.createStatement();
