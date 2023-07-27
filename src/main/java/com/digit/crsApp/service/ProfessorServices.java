@@ -96,7 +96,7 @@ public class ProfessorServices {
 					pstmt.setInt(1, ps.getSid());
 					resultset=pstmt.executeQuery();
 					while(resultset.next()==true) {
-						System.out.println( resultset.getString("sname")+" student marks Added------------ :");
+						System.out.println( resultset.getString("sname")+"marks Added------------ :");
 					}
 
 				}

@@ -34,16 +34,11 @@ public class Professor {
 		int x = pstmt.executeUpdate();
 		if (x > 0) {
 			System.out.println("Professor Registered------------ :");
-			CRSApp.manage();
 
 		}
-		}
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		String sql1 = "insert into prequest values(?,?)";
-		try {
+		
 			
 		pstmt = CRSApp.con.prepareStatement(sql1);
 		 
@@ -52,9 +47,10 @@ public class Professor {
 			
 		pstmt.setString(2, getPassword());
 
-		int x = pstmt.executeUpdate();
-		if (x > 0) {
+		int x1 = pstmt.executeUpdate();
+		if (x1 > 0) {
 			System.out.println("Request login activated:");
+			CRSApp.manage();
 
 		}
 		}
