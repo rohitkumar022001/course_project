@@ -14,6 +14,7 @@ public class ProfessorServices {
 	static int sid;
 	static int marks;
 	static String grade;
+	static String check;
 	private static PreparedStatement pstmt;
 	private static ResultSet resultset;
 	private static Statement stmt;
