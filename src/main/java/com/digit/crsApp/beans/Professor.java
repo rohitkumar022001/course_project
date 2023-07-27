@@ -1,14 +1,99 @@
 package com.digit.crsApp.beans;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+import com.crsApp.CRSApp;
+
 public class Professor {
+	private static PreparedStatement pstmt;
 	int pid;
-	String pname;
+	static String pname;
 	int exp;
+	static String  user_name;
+	static String password;
+	private static Object resultset;
+	private static Statement stmt;
+	public static void Register() {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Kindly register yourself");
+		System.out.println("\nEnter user name");
+		user_name=sc.next();
+		System.out.println("Set password");
+		password=sc.next();
+		String sql = "insert into users values(?,?)";
+		try {
+		pstmt = CRSApp.con.prepareStatement(sql);
+		
+			pstmt.setString(1, getUser_name());
+			
+		pstmt.setString(2, getPassword());
+
+		int x = pstmt.executeUpdate();
+		if (x > 0) {
+			System.out.println("Professor Registered------------ :");
+			CRSApp.manage();
+
+		}
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String sql1 = "insert into prequest values(?,?)";
+		try {
+			
+		pstmt = CRSApp.con.prepareStatement(sql1);
+		 
+		
+			pstmt.setString(2, getUser_name());
+			
+		pstmt.setString(3, getPassword());
+
+		int x = pstmt.executeUpdate();
+		if (x > 0) {
+			System.out.println("Request login activated:");
+
+		}
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 	public Professor(int pid, String pname, int exp) {
 		super();
 		this.pid = pid;
 		this.pname = pname;
 		this.exp = exp;
+	}
+	/**
+	 * @return the user_name
+	 */
+	public static String getUser_name() {
+		return user_name;
+	}
+	/**
+	 * @param user_name the user_name to set
+	 */
+	public static void setUser_name(String user_name) {
+		Professor.user_name = user_name;
+	}
+	/**
+	 * @return the password
+	 */
+	public static String getPassword() {
+		return password;
+	}
+	/**
+	 * @param password the password to set
+	 */
+	public static void setPassword(String password) {
+		Professor.password = password;
 	}
 	/**
 	 * @return the pid
@@ -25,7 +110,7 @@ public class Professor {
 	/**
 	 * @return the pname
 	 */
-	public String getPname() {
+	public static String getPname() {
 		return pname;
 	}
 	/**

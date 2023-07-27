@@ -12,19 +12,18 @@ import com.digit.crsApp.beans.Professor;
 import com.digit.crsApp.beans.Student;
 
 public class AdminServices {
+	private static PreparedStatement pstmt;
+	public static int n;
+	
+	private static ResultSet resultset;
+	private static Statement stmt;
 
-	private PreparedStatement pstmt;
-	public int n;
-	Scanner sc = new Scanner(System.in);
-	private ResultSet resultset;
-	private Statement stmt;
-
-	public void menu() {
+	public static void menu() {
 		// TODO Auto-generated method stub
 		System.out.println("\nSelect Option:");
 		System.out.println("1. Add course\n" + "2. Add Student\n" + "3. Add Professor\n" + "4. Remove Course\n"
 				+ "5. Remove Professor\n" + "6. Remove Student\n" + "7. View All Students\n" + "8. View All Courses\n"
-				+ "9. View All Professors\n" + "10. View All Users\n" + "0. Exit\n");
+				+ "9. View All Professors\n" + "10. View All Users\n" +"11. management\n"+ "0. Exit\n");
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter your choice");
 		n = sc.nextInt();
@@ -70,9 +69,13 @@ public class AdminServices {
 			 viewUser();
 			break;
 		}
+		case 11: {
+			CRSApp.manage();
+		}
 		case 0: {
 			System.exit(0);
 		}
+		
 		default: {
 			System.err.println("enter a valid input");
 			break;
@@ -80,7 +83,7 @@ public class AdminServices {
 		}
 	}
 
-	private void viewUser() {
+	public static void viewUser() {
 		// TODO Auto-generated method stub
 		CRSApp.sleep(3000);
 		try {
@@ -90,7 +93,7 @@ public class AdminServices {
 			 System.out.println("User Details below........... ");
 			while (resultset.next() == true) {
 
-				System.out.println(resultset.getInt(1));
+				System.out.println(resultset.getString(1));
 
 				System.out.println(resultset.getString(2));
 
@@ -105,7 +108,7 @@ public class AdminServices {
 		menu();
 	}
 
-	public void viewProfessor() {
+	public static void viewProfessor() {
 		// TODO Auto-generated method stub
 		CRSApp.sleep(3000);
 		try {
@@ -134,7 +137,7 @@ public class AdminServices {
 		
 	}
 
-	public void viewCourse() {
+	public static void viewCourse() {
 		// TODO Auto-generated method stub
 		CRSApp.sleep(3000);
 		try {
@@ -166,7 +169,7 @@ public class AdminServices {
 		
 	}
 
-	public void viewStudent() {
+	public static void viewStudent() {
 		// TODO Auto-generated method stub
 		CRSApp.sleep(3000);
 		try {
@@ -198,8 +201,9 @@ public class AdminServices {
 
 	}
 
-	private void removeStudent() {
+	private static void removeStudent() {
 		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
 		try {
 			String sql = "delete from student where sid=?";
 			pstmt = CRSApp.con.prepareStatement(sql);
@@ -237,8 +241,9 @@ public class AdminServices {
 
 	}
 
-	public void removeProfessor() {
+	public static void removeProfessor() {
 		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
 		try {
 			String sql = "delete from professor where pid=?";
 			pstmt = CRSApp.con.prepareStatement(sql);
@@ -276,8 +281,9 @@ public class AdminServices {
 
 	}
 
-	public void removeCourse() {
+	public static void removeCourse() {
 		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
 		try {
 			String sql = "delete from course where cid=?";
 			pstmt = CRSApp.con.prepareStatement(sql);
@@ -312,8 +318,9 @@ public class AdminServices {
 
 	}
 
-	public void addProfessor() {
+	public static void addProfessor() {
 		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
 		try {
 
 			// Professor p = new Professor(1, "mudu",5);int pid, String pname, int exp
@@ -356,7 +363,7 @@ public class AdminServices {
 
 	}
 
-	public void addCourse() {
+	public static void addCourse() {
 		try {
 
 			// Course c = new Course(1, "java", 4000, 3);
@@ -400,7 +407,7 @@ public class AdminServices {
 		}
 	}
 
-	public void addStudent() {
+	public static void addStudent() {
 		try {
 
 			// Student s = new Student(1, "rohit", "rohit@gmail.com,
