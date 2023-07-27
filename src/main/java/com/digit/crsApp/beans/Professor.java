@@ -48,9 +48,9 @@ public class Professor {
 		pstmt = CRSApp.con.prepareStatement(sql1);
 		 
 		
-			pstmt.setString(2, getUser_name());
+			pstmt.setString(1, getUser_name());
 			
-		pstmt.setString(3, getPassword());
+		pstmt.setString(2, getPassword());
 
 		int x = pstmt.executeUpdate();
 		if (x > 0) {
