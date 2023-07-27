@@ -27,11 +27,12 @@ public class StudentServices {
 					stmt = CRSApp.con.createStatement();
 					 resultset = stmt.executeQuery(sql);
 					 temp++;
+					 System.out.println("\nEnter registerd user name");
+						user_name=sc.next();
+						System.out.println("Enter password");
+						password=sc.next();
 			while (resultset.next() == true) {
-				System.out.println("\nEnter registerd user name");
-				user_name=sc.next();
-				System.out.println("Enter password");
-				password=sc.next();
+				
 				if(user_name.equals(resultset.getString("user_name")) 
 						&& password.equals(resultset.getString("password"))) {
 					System.out.println("Login successful..........");
@@ -39,9 +40,7 @@ public class StudentServices {
 					break;
 					
 				}
-				else {
-					System.out.println("Re-enter your login details");
-				}
+				
 	
 			}
 			if(temp==3) {
@@ -49,6 +48,9 @@ public class StudentServices {
 				CRSApp.manage();
 				break;
 				
+			}
+			else {
+				System.out.println("Re-enter your login details");
 			}
 			
 			
