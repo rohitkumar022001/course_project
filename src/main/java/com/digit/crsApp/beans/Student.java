@@ -11,6 +11,7 @@ public class Student {
 	static String sname;
 	private static PreparedStatement pstmt;
 	String email;
+	int course_id;
 	static String user_name;
 	static String password;
 	public static void Register() {
@@ -31,8 +32,6 @@ public class Student {
 		int x = pstmt.executeUpdate();
 		if (x > 0) {
 			System.out.println("Student Registered------------ :");
-			System.out.println("Request login activated:");
-			CRSApp.manage();
 
 		}
 		}
@@ -41,16 +40,74 @@ public class Student {
 			e.printStackTrace();
 		}
 		
+		
+		
+		
+		
+		String sql1 = "insert into srequest values(?,?)";
+
+		 
+
+        try {
+
+ 
+
+            pstmt = CRSApp.con.prepareStatement(sql1);
+
+ 
+
+            pstmt.setString(1, getUser_name());
+
+ 
+
+            pstmt.setString(2, getPassword());
+
+ 
+
+            int x = pstmt.executeUpdate();
+
+ 
+
+            if (x > 0) {
+
+ 
+
+                System.out.println("Request login activated:");
+
+                
+
+ 
+
+            }
+
+ 
+
+        }
+
+ 
+
+        catch (SQLException e) {
+
+ 
+
+            // TODO Auto-generated catch block
+
+ 
+
+            e.printStackTrace();
+
+ 
+
+        }
 			
 
 	}
-	public Student(int sid, String sname, String email, String user_name,String password) {
+	public Student(int sid,int course_id, String sname, String email) {
 		super();
 		this.sid = sid;
+		this.course_id = course_id;
 		this.sname = sname;
 		this.email = email;
-		this.user_name = user_name;
-		this.password=password;
 	}
 	/**
 	 * @return the sid

@@ -1,14 +1,13 @@
 package com.digit.crsApp.service;
 
 import java.sql.PreparedStatement;
-
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Scanner;
 
+
 import com.crsApp.CRSApp;
-import com.digit.crsApp.beans.Professor;
-import com.digit.crsApp.beans.Student;
 
 public class ProfessorServices {
 	static int sid;
@@ -20,6 +19,10 @@ public class ProfessorServices {
 	private static Statement stmt;
 	static String user_name;
 	static String password;
+	private static Statement stmt2;
+	private static ResultSet resultset1;
+	private static ResultSet resultsetn;
+	
 	
 	public static void login() {
 		Scanner sc=new Scanner(System.in);
@@ -27,6 +30,7 @@ public class ProfessorServices {
 		System.out.println("please Login");
 		
 		try {
+			boolean flag=true;
 			
 			 while(true) {
 				 String sql = "select * from prequest";
@@ -41,14 +45,21 @@ public class ProfessorServices {
 				
 				if(user_name.equals(resultset.getString("user_name")) 
 						&& password.equals(resultset.getString("password"))) {
+					CRSApp.sleep(3000);
 					System.out.println("Login successful..........");
-					grade_marks();
+					flag = grade_marks();
 					break;
 					
 				}
 				
 	
 			}
+			
+			if(!flag) {
+				CRSApp.manage();
+				break;
+			}
+			
 			if(temp==3) {
 				System.err.println("User name not found");
 				CRSApp.manage();
@@ -68,67 +79,260 @@ public class ProfessorServices {
 			e.printStackTrace();
 		}
 	}
-	public static void grade_marks(){
+	public static boolean grade_marks(){
 		
 		try {
 
-			// Professor p = new Professor(1, "mudu",5);int pid, String pname, int exp
-			Scanner sc = new Scanner(System.in);
-			System.out.println("add student marks");
-			System.out.println("Enter student id");
-			sid = sc.nextInt();
-			System.out.println("Enter student marks");
-			marks = sc.nextInt();
-			System.out.println("students grade");
-			grade=getGrade();
-			System.out.println(grade);
-			
-				ProfessorServices ps = new ProfessorServices(sid, marks,grade);
-				String sql = "insert into marks values(?,?,?)";
-				pstmt = CRSApp.con.prepareStatement(sql);
-				pstmt.setInt(1, ps.getSid());
-				pstmt.setInt(2, ps.getMarks());
-				pstmt.setString(3, ps.getGrade());
-				
+            // creating id-->course
 
-				int x = pstmt.executeUpdate();
-				if (x > 0) {
-					String sql1="select Sname from student where sid=?";
-					pstmt = CRSApp.con.prepareStatement(sql1);
-					pstmt.setInt(1, ps.getSid());
-					resultset=pstmt.executeQuery();
-					while(resultset.next()==true) {
-						System.out.println( resultset.getString("sname")+" marks Added------------ :");
-					}
+            HashMap<Integer,String> map = new HashMap<>();
 
-				}
-				
-			
-			CRSApp.sleep(3000);
-			System.out.println("\n\t\tstudent marks Added Successfully...");
-			System.out.println("\n****************************************\n");
-			System.out.println("Do you want to grade more student : y/n");
-			check=sc.next();
-			if(check.equals("y")) {
-				grade_marks();
-			}
-			else if(check.equals("n")){
-				System.out.println("Do you want to go the management : y/n");
-				check=sc.next();
-				if(check.equals("y")) {
-					CRSApp.manage();
-				}
-				else if(check.equals("n")){
-					System.out.println("\ngo to menu");
-					AdminServices.menu();
-				}
-			}
-			
+            HashMap<Integer,String> map2 = new HashMap<>();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            
+
+            String sql1 = "select cid,cname from course";
+
+            String sqlpr = "select c_id,pname from professor";
+
+            
+
+            stmt = CRSApp.con.createStatement();
+
+            stmt2 = CRSApp.con.createStatement();
+
+            
+
+            resultset = stmt.executeQuery(sql1);
+
+ 
+
+            resultset1 = stmt2.executeQuery(sqlpr);
+
+            
+
+            
+
+            while (resultset1.next() == true) {
+
+                int cid = resultset1.getInt("c_id");
+
+                String pname = resultset1.getString("pname");
+
+                map2.put(cid, pname);
+
+            }
+
+            
+
+            while (resultset.next() == true) {
+
+                int cid = resultset.getInt("cid");
+
+                String cname = resultset.getString("cname");
+
+                map.put(cid, cname);
+
+ 
+
+            }
+
+            
+
+            
+
+// finished
+
+            
+
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("add student marks");
+
+ 
+
+            System.out.println("Enter student id");
+
+ 
+
+            sid = sc.nextInt();
+
+  // start
+            
+            String sql4 = "select sname from student where sid=? ";
+            
+            pstmt = CRSApp.con.prepareStatement(sql4);
+            pstmt.setInt(1, sid);
+            
+            resultsetn = pstmt.executeQuery();
+            if(!resultsetn.next()) {
+            	System.out.println("Id - "+sid+" is not Present in The DATABASE . ");
+            	return false;
+            }
+            
+            //end
+
+ 
+
+            System.out.println("Enter student marks");
+
+ 
+
+            marks = sc.nextInt();
+
+System.out.println("student grade");
+
+            grade = getGrade();
+
+            System.out.println(grade);
+
+ 
+
+            ProfessorServices ps = new ProfessorServices(sid, marks, grade);
+
+ 
+
+            String sql2 = "insert into marks values(?,?,?)";
+
+ 
+
+            pstmt = CRSApp.con.prepareStatement(sql2);
+
+ 
+
+            pstmt.setInt(1, ps.getSid());
+
+ 
+
+            pstmt.setInt(2, ps.getMarks());
+
+            pstmt.setString(3, ps.getGrade());
+
+ 
+
+            int x = pstmt.executeUpdate();
+
+ 
+
+            if (x > 0) {
+
+ 
+
+                String sql3 = "select Sname,cid from student where sid=?";
+
+ 
+
+                pstmt = CRSApp.con.prepareStatement(sql3);
+
+ 
+
+                pstmt.setInt(1, ps.getSid());
+
+ 
+
+                resultset = pstmt.executeQuery();
+
+ 
+
+                while (resultset.next() == true) {
+
+                    System.out.println("Professor "+map2.get(resultset.getInt("cid"))+" is Grading.....\n");
+                    CRSApp.sleep(3000);
+
+                    System.out.println(resultset.getString("sname") + " marks Added For Course "+map.get(resultset.getInt("cid"))+"------------ :");
+
+ 
+
+                }
+
+ 
+
+            }
+
+ 
+
+            System.out.println("\n\t\tstudent marks Added Successfully...");
+
+ 
+
+            System.out.println("\n**********************\n");
+
+ 
+
+            System.out.println("Do you want to grade more student : y/n");
+
+ 
+
+            check = sc.next();
+
+ 
+
+            if (check.equals("y")) {
+
+ 
+
+                grade_marks();
+
+ 
+
+            }
+
+ 
+
+            else if (check.equals("n")) {
+
+ 
+
+                System.out.println("Do you want to go the management : y/n");
+
+ 
+
+                check = sc.next();
+
+ 
+
+                if (check.equals("y")) {
+
+ 
+
+                    CRSApp.manage();
+
+ 
+
+                }
+
+ 
+
+                else if (check.equals("n")) {
+
+                    System.out.println("Look into the menu");
+
+ 
+
+                    AdminServices.menu();
+
+ 
+
+                }
+
+ 
+
+            }
+
+ 
+
+        } catch (Exception e) {
+
+ 
+
+            e.printStackTrace();
+
+ 
+
+        }
+		return true;
 	}
+		
 	public ProfessorServices(int sid, int marks,String grade) {
 		super();
 		this.sid = sid;

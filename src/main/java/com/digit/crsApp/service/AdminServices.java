@@ -17,6 +17,9 @@ public class AdminServices {
 	
 	private static ResultSet resultset;
 	private static Statement stmt;
+	private static PreparedStatement pstmt1;
+	private static ResultSet resultSet1;
+	private static Statement stmt1;
 
 	public static void menu() {
 		// TODO Auto-generated method stub
@@ -85,11 +88,20 @@ public class AdminServices {
 
 	public static void viewUser() {
 		// TODO Auto-generated method stub
-		CRSApp.sleep(3000);
+		
 		try {
 			String sql = "select * from users";
 			stmt = CRSApp.con.createStatement();
 			 resultset = stmt.executeQuery(sql);
+			 
+			 stmt1 = CRSApp.con.createStatement();
+			 resultSet1 =  stmt1.executeQuery(sql);
+			 
+			 if(!resultSet1.next()) {
+				 menu();
+				 return;
+			 }
+			 CRSApp.sleep(3000);
 			 System.out.println("User Details below........... ");
 			while (resultset.next() == true) {
 
@@ -110,11 +122,21 @@ public class AdminServices {
 
 	public static void viewProfessor() {
 		// TODO Auto-generated method stub
-		CRSApp.sleep(3000);
+		
 		try {
 			String sql = "select * from professor";
 			stmt = CRSApp.con.createStatement();
 			 resultset = stmt.executeQuery(sql);
+			 
+			 stmt1 = CRSApp.con.createStatement();
+			 resultSet1 =  stmt1.executeQuery(sql);
+			 
+			 if(!resultSet1.next()) {
+				 System.out.println("No Professor Registered . ");
+				 menu();
+				 return;
+			 }
+			 CRSApp.sleep(3000);
 			 System.out.println("professor Details below........... ");
 			while (resultset.next() == true) {
 
@@ -139,13 +161,23 @@ public class AdminServices {
 
 	public static void viewCourse() {
 		// TODO Auto-generated method stub
-		CRSApp.sleep(3000);
+		
 		try {
 			String sql = "select * from course";
 			stmt = CRSApp.con.createStatement();
+			stmt1 = CRSApp.con.createStatement();
+			 resultSet1 =  stmt1.executeQuery(sql);
 			 resultset = stmt.executeQuery(sql);
+			
+			 if(!resultSet1.next()) {
+				 System.out.println("No Course Added . ");
+				 menu();
+				 return;
+			 }
+			 CRSApp.sleep(3000);
+			 
 			 System.out.println("course Details below........... ");
-			while (resultset.next() == true) {
+			 while(resultset.next() == true){
 
 				System.out.println(resultset.getInt("cid"));
 
@@ -171,11 +203,19 @@ public class AdminServices {
 
 	public static void viewStudent() {
 		// TODO Auto-generated method stub
-		CRSApp.sleep(3000);
+	
 		try {
 			String sql = "select * from student";
 			stmt = CRSApp.con.createStatement();
 			 resultset = stmt.executeQuery(sql);
+			 
+			 if(!resultset.next()) {
+				 System.out.println("NO Student Registered . ");
+				 menu();
+				 return;
+			 }
+			 CRSApp.sleep(3000);
+			 
 			 System.out.println("student Details below........... ");
 			while (resultset.next() == true) {
 
@@ -187,7 +227,7 @@ public class AdminServices {
 
 				System.out.println(resultset.getString(4));
 
-				System.out.println(resultset.getString(5));
+	
 
 				System.out.println("--------");
 
@@ -204,23 +244,41 @@ public class AdminServices {
 	private static void removeStudent() {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
+		int i=0;
 		try {
 			String sql = "delete from student where sid=?";
+			
 			pstmt = CRSApp.con.prepareStatement(sql);
-			System.out.println("How many student do you want to remove");
+			String sqls = "select sname from student where sid=?";
+			pstmt1 = CRSApp.con.prepareStatement(sqls);
+			
+			System.out.println("How many student do you want to remove ?");
 			n = sc.nextInt();
-			for (int i = 0; i < n; i++) {
+			
+			for (i = 0; i < n; i++) {
 
-				System.out.println("enter student id to be removed");
-				pstmt.setInt(1, sc.nextInt());
-				int x = pstmt.executeUpdate();
-				if (x > 0) {
-					System.out.println("Student removing");
+				
+				System.out.println("Enter student id to be removed");
+				
+				int y = sc.nextInt();
+				pstmt1.setInt(1,y);
+				resultSet1 = pstmt1.executeQuery();
+				
+				String sname ="";
+				
+				if(resultSet1.next()) {
+				sname = resultSet1.getString("sname");
 				}
 				else {
-					System.out.println("student not removed");
-					menu();
+					break;
 				}
+				
+				pstmt.setInt(1, y);
+				int x = pstmt.executeUpdate();
+				if (x > 0) {
+					System.out.println("Removing Studd - "+sname);
+				}
+				
 
 			}
 
@@ -229,8 +287,8 @@ public class AdminServices {
 			e.printStackTrace();
 		}
 
-		if (n == 0) {
-			System.out.println((n) + " student removed");
+		if (i < n-1 ) {
+			System.out.println((n-i)+" Students are not Found  . ");
 			menu();
 		} else {
 			CRSApp.sleep(3000);
@@ -244,23 +302,37 @@ public class AdminServices {
 	public static void removeProfessor() {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
+		int i=0;
 		try {
 			String sql = "delete from professor where pid=?";
 			pstmt = CRSApp.con.prepareStatement(sql);
-			System.out.println("How many professor do you want to remove");
+			String sqls = "select pname from professor where pid=?";
+			pstmt1 = CRSApp.con.prepareStatement(sqls);
+			System.out.println("How many professor do you want to remove ?");
 			n = sc.nextInt();
-			for (int i = 0; i < n; i++) {
+			for (i = 0; i < n; i++) {
 
 				System.out.println("enter professor id to be removed");
-				pstmt.setInt(1, sc.nextInt());
-				int x = pstmt.executeUpdate();
-				if (x > 0) {
-					System.out.println("professor removing");
+				int y = sc.nextInt();
+				pstmt1.setInt(1,y);
+				resultSet1 = pstmt1.executeQuery();
+				
+				String pname ="";
+				
+				if(resultSet1.next()) {
+				pname = resultSet1.getString("pname");
 				}
 				else {
-					System.out.println("professor not removed");
-					menu();
+					break;
 				}
+				
+				pstmt.setInt(1, y);
+				
+				int x = pstmt.executeUpdate();
+				if (x > 0) {
+					System.out.println("removing proff - "+pname);
+				}
+				
 
 			}
 
@@ -269,8 +341,8 @@ public class AdminServices {
 			e.printStackTrace();
 		}
 
-		if (n == 0) {
-			System.out.println((n) + " professor removed");
+		if (i< n-1) {
+			System.out.println((n-i) + " professor are not found . ");
 			menu();
 		} else {
 			CRSApp.sleep(3000);
@@ -284,30 +356,45 @@ public class AdminServices {
 	public static void removeCourse() {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
+		int i=0;
 		try {
 			String sql = "delete from course where cid=?";
 			pstmt = CRSApp.con.prepareStatement(sql);
-			System.out.println("How many course do you want to delete");
+			String sqls = "select cname from course where cid=?";
+			pstmt1 = CRSApp.con.prepareStatement(sqls);
+			System.out.println("How many course do you want to delete ?");
 			n = sc.nextInt();
-			for (int i = 0; i < n; i++) {
+			for (i = 0; i < n; i++) {
 
-				System.out.println("enter  course id to be removed");
-				pstmt.setInt(1, sc.nextInt());
+				System.out.println("Enter  course id to be removed");
+				
+				int y = sc.nextInt();
+				pstmt1.setInt(1,y);
+				resultSet1 = pstmt1.executeQuery();
+				
+				String cname ="";
+				
+				if(resultSet1.next()) {
+				cname = resultSet1.getString("cname");
+				}
+				else {
+					break;
+				}
+				
+				pstmt.setInt(1, y);
+				
 				int x = pstmt.executeUpdate();
 				if (x > 0) {
-					System.out.println( "course removing");
-				} else {
-					System.out.println("course not removed");
-					menu();
-				}
+					System.out.println( "removing course - "+cname);
+				} 
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		if (n == 0) {
-			System.out.println((n) + " course removed");
+		if (i<n-1) {
+			System.out.println((n-i) + " course not found . ");
 			menu();
 		} else {
 			CRSApp.sleep(3000);
@@ -330,29 +417,35 @@ public class AdminServices {
 			System.out.println("\nHow many professor do you want to add ?");
 			n = sc.nextInt();
 			for (int j = 0; j < n; j++) {
-				System.out.println("professor " + (j + 1));
+				System.out.println("Registering professor No :  " + (j + 1));
+				Professor.Register();
+				
 				System.out.println("Enter professor id");
 				id = sc.nextInt();
+				System.out.println("Enter the Course ID to which the Professor will Teach : ");
+				int cid = sc.nextInt();
 				System.out.println("Enter professor name");
 				pn = sc.next();
 				System.out.println("Enter professor experience");
 				exp = sc.nextInt();
 
-				Professor p = new Professor(id, pn, exp);
-				String sql = "insert into professor values(?,?,?)";
+				Professor p = new Professor(id,cid ,pn, exp);
+				String sql = "insert into professor values(?,?,?,?)";
 				pstmt = CRSApp.con.prepareStatement(sql);
 				pstmt.setInt(1, p.getPid());
-				pstmt.setString(2, p.getPname());
-				pstmt.setInt(3, p.getExp());
+				pstmt.setInt(2,cid);
+				pstmt.setString(3, p.getPname());
+				pstmt.setInt(4, p.getExp());
 
 				int x = pstmt.executeUpdate();
 				if (x > 0) {
+					CRSApp.sleep(3000);
 					System.out.println(p.getPname() + " Professor Added------------ :");
 
 				}
 				
 			}
-			CRSApp.sleep(3000);
+			
 			System.out.println("\n\t\tProfessor Added Successfully...");
 			System.out.println("\n****************************************\n");
 			menu();
@@ -390,14 +483,15 @@ public class AdminServices {
 				pstmt.setString(2, c.getCname());
 				pstmt.setInt(3, c.getFees());
 				pstmt.setInt(4, c.getDur_months());
-
+				
 				x = pstmt.executeUpdate();
 				if (x > 0) {
-					System.out.println(c.getCname() + " Course Added---------  :");
+					CRSApp.sleep(3000);
+					System.out.println(c.getCname() + "\n Course Added---------  :");
 
 				}
 			}
-			CRSApp.sleep(3000);
+			
 			System.out.println("\n\t\tCourse Added Successfully...");
 			System.out.println("\n****************************************\n");
 			menu();
@@ -421,30 +515,32 @@ public class AdminServices {
 			n = sc.nextInt();
 			for (int i = 0; i < n; i++) {
 				System.out.println("Student " + (i + 1));
+				Student.Register();
+				
 				System.out.println("Enter student id ");
 				id = sc.nextInt();
+				System.out.println("Enter Course id the Studnet want to Enroll : ");
+				int cid = sc.nextInt();
 				System.out.println("Enter student name");
 				name = sc.next();
 				System.out.println("Enter student email");
 				email = sc.next();
-				System.out.println("Enter student username");
-				username = sc.next();
-				System.out.println("Enter student password");
-				pswd = sc.next();
+				
 
-				Student s = new Student(id, name, email, username, pswd);
-				String sql = "insert into student values(?,?,?,?,?)";
+				Student s = new Student(id, cid,name, email);
+				String sql = "insert into student values(?,?,?,?)";
 				pstmt = CRSApp.con.prepareStatement(sql);
 				pstmt.setInt(1, s.getSid());
-				pstmt.setString(2, s.getSname());
-				pstmt.setString(3, s.getEmail());
-				pstmt.setString(4, s.getUser_name());
-				pstmt.setString(5, s.getPassword());
+				pstmt.setInt(2,cid);
+				pstmt.setString(3, s.getSname());
+				pstmt.setString(4, s.getEmail());
+				
 
 				int x = pstmt.executeUpdate();
-				CRSApp.sleep(3000);
+				
 				if (x > 0) {
-					System.out.println(s.getSname() + " Student Added------------ :");
+					CRSApp.sleep(3000);
+					System.out.println(s.getSname() + "  Added------------ :");
 
 				}
 			}

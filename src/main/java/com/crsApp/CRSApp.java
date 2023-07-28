@@ -53,9 +53,7 @@ public class CRSApp {
 		System.out.println("Select the Type of User:");
 		System.out.println("1. Professor service\n"
 				+ "2. Student service\n"
-				+ "3. Register Professor\n"
-				+ "4. Register Student\n"
-				+"5. Menu");
+				+"3. Menu");
 		System.out.println("Enter number jo aapko karna hai");
 		Scanner sc = new Scanner(System.in);
 		int n = sc.nextInt();
@@ -70,14 +68,6 @@ public class CRSApp {
 			break;
 		}
 		case 3:{
-			Professor.Register();
-			break;
-		}
-		case 4:{
-			Student.Register();
-			break;
-		}
-		case 5:{
 			AdminServices adsrv = new AdminServices();
 			adsrv.menu();
 			break;

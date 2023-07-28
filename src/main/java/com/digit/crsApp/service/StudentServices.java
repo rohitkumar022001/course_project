@@ -22,7 +22,7 @@ public class StudentServices {
 		
 		try {
 			 while(true) {
-				 String sql = "select * from student";
+				 String sql = "select * from srequest";
 					stmt = CRSApp.con.createStatement();
 					 resultset = stmt.executeQuery(sql);
 					 temp++;

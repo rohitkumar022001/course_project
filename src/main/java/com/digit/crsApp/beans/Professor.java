@@ -12,10 +12,12 @@ public class Professor {
 	int pid;
 	static String pname;
 	int exp;
+	int course_id;
 	static String  user_name;
 	static String password;
 	private static Object resultset;
 	private static Statement stmt;
+	
 	public static void Register() {
 		Scanner sc=new Scanner(System.in);
 		System.out.println("Kindly register yourself");
@@ -50,7 +52,7 @@ public class Professor {
 		int x1 = pstmt.executeUpdate();
 		if (x1 > 0) {
 			System.out.println("Request login activated:");
-			CRSApp.manage();
+			
 
 		}
 		}
@@ -60,10 +62,14 @@ public class Professor {
 		}
 		
 		
+		
+		
+		
 	}
-	public Professor(int pid, String pname, int exp) {
+	public Professor(int pid, int course_id,String pname, int exp) {
 		super();
 		this.pid = pid;
+		this.course_id = course_id;
 		this.pname = pname;
 		this.exp = exp;
 	}
