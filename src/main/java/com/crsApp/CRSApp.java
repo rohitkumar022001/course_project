@@ -36,7 +36,8 @@ public class CRSApp {
 				break;
 			}
 			if(temp==3) {
-				System.out.println("admin not found");
+				System.err.println("admin not found");
+				admin();
 				break;
 				
 			}

@@ -43,13 +43,13 @@ public class StudentServices {
 	
 			}
 			if(temp==3) {
-				System.out.println("User name not found");
+				System.err.println("User name not found");
 				CRSApp.manage();
 				break;
 				
 			}
 			else {
-				System.out.println("Re-enter your login details");
+				System.err.println("Re-enter your login details");
 			}
 			
 			
