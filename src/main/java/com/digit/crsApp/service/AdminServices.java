@@ -208,8 +208,10 @@ public class AdminServices {
 			String sql = "select * from student";
 			stmt = CRSApp.con.createStatement();
 			 resultset = stmt.executeQuery(sql);
+			 stmt1 = CRSApp.con.createStatement();
+			 resultSet1 =  stmt1.executeQuery(sql);
 			 
-			 if(!resultset.next()) {
+			 if(!resultSet1.next()) {
 				 System.out.println("NO Student Registered . ");
 				 menu();
 				 return;

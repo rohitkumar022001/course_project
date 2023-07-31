@@ -87,6 +87,7 @@ public class ProfessorServices {
 
             HashMap<Integer,String> map = new HashMap<>();
 
+            // id -> professor
             HashMap<Integer,String> map2 = new HashMap<>();
 
             
