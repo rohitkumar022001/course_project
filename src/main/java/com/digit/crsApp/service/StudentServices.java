@@ -97,6 +97,8 @@ public class StudentServices {
 		pstmt = CRSApp.con.prepareStatement(sql2);
 		pstmt.setInt(1, ps.getSid());
 		resultset=pstmt.executeQuery();
+		
+		
 		while(resultset.next()==true) {
 			System.out.println("Marks of the student....");
 			System.out.println( resultset.getInt("marks"));

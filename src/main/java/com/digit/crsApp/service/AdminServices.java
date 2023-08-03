@@ -127,7 +127,6 @@ public class AdminServices {
 			String sql = "select * from professor";
 			stmt = CRSApp.con.createStatement();
 			 resultset = stmt.executeQuery(sql);
-			 
 			 stmt1 = CRSApp.con.createStatement();
 			 resultSet1 =  stmt1.executeQuery(sql);
 			 

@@ -1,6 +1,7 @@
 package com.crsApp;
 
 import java.sql.Connection;
+
 import com.digit.crsApp.service.ProfessorServices;
 import java.sql.DriverManager;
 import java.util.Scanner;
@@ -10,7 +11,6 @@ import com.digit.crsApp.beans.Student;
 import com.digit.crsApp.beans.Users;
 import com.digit.crsApp.service.AdminServices;
 import com.digit.crsApp.service.StudentServices;
-
 public class CRSApp {
 	public static Connection con;
 	public static void sleep(int val) {
@@ -31,7 +31,6 @@ public class CRSApp {
 			if(b==true) {
 				System.out.println("Login Successful...\n");
 				System.out.println("------------------------------------");
-				
 				manage();
 				break;
 			}
